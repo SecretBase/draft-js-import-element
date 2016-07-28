@@ -286,11 +286,6 @@ class BlockGenerator {
     style = addStyleFromTagName(style, tagName, this.elementStyles);
     let styleAttribute = element.getAttribute('style');
 
-    // Unify the string from the styleAttribute
-    if (styleAttribute) {
-      styleAttribute = styleAttribute.replace(/: */, ': ');
-    }
-
     if (styleAttribute) {
       const customCssMapToStyle = {};
       const normalizeStyle = str => str.replace(/ /g, '').replace(/;/g, '');
