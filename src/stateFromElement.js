@@ -285,6 +285,12 @@ class BlockGenerator {
     let entityKey = block.entityStack.slice(-1)[0];
     style = addStyleFromTagName(style, tagName, this.elementStyles);
     let styleAttribute = element.getAttribute('style');
+
+    // Unify the string from the styleAttribute
+    if (styleAttribute) {
+      styleAttribute = styleAttribute.replace(/: */, ': ');
+    }
+
     if (styleAttribute) {
       let customCssMapToStyle = {};
 
