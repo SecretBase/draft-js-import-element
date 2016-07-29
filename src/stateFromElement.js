@@ -284,6 +284,8 @@ class BlockGenerator {
     let style = block.styleStack.slice(-1)[0];
     let entityKey = block.entityStack.slice(-1)[0];
     style = addStyleFromTagName(style, tagName, this.elementStyles);
+    style = addStyleFromDraftInlineStyle(style, element);
+    element = removeStyleFromDraftInlineStyle(element);
     let styleAttribute = element.getAttribute('style');
 
     // Unify the string from the styleAttribute
@@ -466,6 +468,54 @@ function addStyleFromTagName(styleSet: StyleSet, tagName: string, elementStyles?
       return styleSet;
     }
   }
+}
+
+function addStyleFromDraftInlineStyle(styleSet: StyleSet, element: DOMElement) {
+  if (!element.style) {
+    return styleSet;
+  }
+
+  if (element.style.fontWeight === 'bold') {
+    styleSet = styleSet.add(INLINE_STYLE.BOLD);
+  }
+
+  if (element.style.fontStyle === 'italic') {
+    styleSet = styleSet.add(INLINE_STYLE.ITALIC);
+  }
+
+  if (element.style.textDecoration === 'underline') {
+    styleSet = styleSet.add(INLINE_STYLE.UNDERLINE);
+  }
+
+  if (element.style.textDecoration === 'line-through') {
+    styleSet = styleSet.add(INLINE_STYLE.STRIKETHROUGH);
+  }
+
+  return styleSet;
+}
+
+function removeStyleFromDraftInlineStyle(element: DOMElement) {
+   if (!element.style) {
+     return element;
+   }
+
+   if (element.style.fontWeight === 'bold') {
+     element.style.fontWeight = '';
+   }
+
+   if (element.style.fontStyle === 'italic') {
+     element.style.fontStyle = '';
+   }
+
+   if (element.style.textDecoration === 'underline') {
+     element.style.textDecoration = '';
+   }
+
+   if (element.style.textDecoration === 'line-through') {
+     element.style.textDecoration = '';
+   }
+
+   return element;
 }
 
 function addStyleFromStyleAttribute(styleSet: StyleSet, styleAttributeValue: string, customCssMapToStyle: CustomCssMapToStyle): StyleSet {
